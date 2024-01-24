@@ -53,14 +53,11 @@ var posYcross;
 var diameter = 1;
 
 function setup() {
- // Adjust canvas size to fit within the specified parameters
- var canvasSize = min(windowWidth, windowHeight) * 0.9;
- createCanvas(canvasSize, canvasSize);
-
- ellipseMode(CENTER);
- tileWidth = width / tileCount;
- tileHeight = height / tileCount;
- maxDist = sqrt(pow(width, 2) + pow(height, 2));
+  createCanvas(600, 600);
+  ellipseMode(CENTER);
+  tileWidth = width / tileCount;
+  tileHeight = height / tileCount;
+  maxDist = sqrt(pow(width, 2) + pow(height, 2));
 
  for (var i = 0; i < 5; i++) {
    shapes.push('shape ' + (i + 1));
@@ -83,47 +80,44 @@ function setup() {
 }
 
 function draw() {
- var speed = int(map(mouseX, 0, width, 0, 20));
- for (var i = 0; i <= speed; i++) {
-   //drawBackgroundLines();
+  var speed = int(map(mouseX, 0, width, 0, 20));
+  for (var i = 0; i <= speed; i++) {
+   // drawBackgroundLines();
 
-   for (var gridY = 0; gridY < tileCount; gridY++) {
-     for (var gridX = 0; gridX < tileCount; gridX++) {
-       var posX = tileWidth * gridX + tileWidth / 2;
-       var posY = tileHeight * gridY + tileWidth / 2;
+    for (var gridY = 0; gridY < tileCount; gridY++) {
+      for (var gridX = 0; gridX < tileCount; gridX++) {
+        var posX = tileWidth * gridX + tileWidth / 2;
+        var posY = tileHeight * gridY + tileWidth / 2;
 
-       var angle = atan2(mouseY - posY, mouseX - posX) + (shapeAngle * (PI / 180));
+        var angle = atan2(mouseY - posY, mouseX - posX) + (shapeAngle * (PI / 180));
 
-       if (sizeMode == 0) newShapeSize = shapeSize;
-       if (sizeMode == 1) newShapeSize = shapeSize * 1.5 - map(dist(mouseX, mouseY, posX, posY), 0, 500, 5, shapeSize);
-       if (sizeMode == 2) newShapeSize = map(dist(mouseX, mouseY, posX, posY), 0, 500, 5, shapeSize);
+        if (sizeMode == 0) newShapeSize = shapeSize;
+        if (sizeMode == 1) newShapeSize = shapeSize * 1.5 - map(dist(mouseX, mouseY, posX, posY), 0, 500, 5, shapeSize);
+        if (sizeMode == 2) newShapeSize = map(dist(mouseX, mouseY, posX, posY), 0, 500, 5, shapeSize);
 
-       push();
-       translate(posX, posY);
-       rotate(angle);
-       noStroke();
+        push();
+        translate(posX, posY);
+        rotate(angle);
+        noStroke();
 
-       if (cKeyPressed) {
-         if (!lastColor) {
-           lastColor = color(random(255), random(255), random(255));
-         }
-         fill(lastColor);
-       } else {
-         fill(commonColor);
-         lastColor = null;
-       }
+        if (cKeyPressed) {
+          if (!lastColor) {
+            lastColor = color(random(255), random(255), random(255));
+          }
+          fill(lastColor);
+        } else {
+          fill(commonColor);
+          lastColor = null;
+        }
 
-       drawShape(currentShape, newShapeSize);
+        drawShape(currentShape, newShapeSize);
 
-       pop();
-     }
-     
-   }
-   
- }
- drawBackgroundLines(); //the page is more stable when this line is here
+        pop();
+      }
+    }
+  }
+  drawBackgroundLines();
 }
-
 function drawBackgroundLines() {
  strokeWeight(1);
  stroke(180, 0, 0);
