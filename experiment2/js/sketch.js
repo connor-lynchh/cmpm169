@@ -1,6 +1,6 @@
-// sketch.js - purpose and description here
-// Author: Your Name
-// Date:
+// sketch.js - Experiment 2 
+// Author: Connor Lynch
+// Date: 1/21/2024
 
 // Here is how you might set up an OOP p5.js project
 // Note that p5.js looks for a file called sketch.js
@@ -53,7 +53,10 @@ var posYcross;
 var diameter = 1;
 
 function setup() {
- createCanvas(600, 600);
+ // Adjust canvas size to fit within the specified parameters
+ var canvasSize = min(windowWidth, windowHeight) * 0.9;
+ createCanvas(canvasSize, canvasSize);
+
  ellipseMode(CENTER);
  tileWidth = width / tileCount;
  tileHeight = height / tileCount;
@@ -82,7 +85,7 @@ function setup() {
 function draw() {
  var speed = int(map(mouseX, 0, width, 0, 20));
  for (var i = 0; i <= speed; i++) {
-   drawBackgroundLines();
+   //drawBackgroundLines();
 
    for (var gridY = 0; gridY < tileCount; gridY++) {
      for (var gridX = 0; gridX < tileCount; gridX++) {
@@ -114,8 +117,11 @@ function draw() {
 
        pop();
      }
+     
    }
+   
  }
+ drawBackgroundLines(); //the page is more stable when this line is here
 }
 
 function drawBackgroundLines() {
