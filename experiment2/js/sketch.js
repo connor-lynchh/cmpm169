@@ -7,11 +7,8 @@
 
 // KEYS
 // 1-7                 : choose shapes
-// arrow up/down       : scale of shapes
-// arrow left/right    : additional rotation of shapes
 // d                   : toggle size depending on distance
 // g                   : toggle grid resolution
-// s                   : save png
 // c                   : changes color of all shapes to a different one
 
 'use strict';

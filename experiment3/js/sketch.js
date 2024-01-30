@@ -1,67 +1,101 @@
-// sketch.js - purpose and description here
-// Author: Your Name
-// Date:
 
-// Here is how you might set up an OOP p5.js project
-// Note that p5.js looks for a file called sketch.js
+var hueRange = [0, 360]; // Full spectrum
+var satRange = [50, 100]; // From somewhat colorful to full color
+var briRange = [50, 100]; // From medium brightness to full brightness
 
-// Constants - User-servicable parts
-// In a longer project I like to put these in a separate file
-const VALUE1 = 1;
-const VALUE2 = 2;
 
-// Globals
-let myInstance;
-let canvasContainer;
+var cnv;
 
-class MyClass {
-    constructor(param1, param2) {
-        this.property1 = param1;
-        this.property2 = param2;
-    }
+var dirX;
+var dirY;
 
-    myMethod() {
-        // code to run when method is called
+var wid = 800;
+var hei = 500;
+
+var NB_FRAMES = 100;
+
+var frame_count = 0;
+function activation(t) {
+    return ((1 - cos(2 * PI * t)) / 2) ** 1;
+}
+
+function object(id) {
+    this.id = id;
+    
+    this.draw = function() {
+        var t = ((frame_count) % NB_FRAMES) / NB_FRAMES + this.id / NB;
+        var x0 = lerp(0, wid, this.id / NB);
+        var theta = PI / 2;
+        var xx = x0;
+        var yy = 0;
+        var Nt = 75;
+        var step = hei / Nt;
+        var turn = lerp(0, 0.4, activation((this.id / NB + t) % 1));
+        
+            // Color variation based on position and time
+            var h = map(noise(this.id * 0.1, t * 0.1), 0, 1, hueRange[0], hueRange[1]);
+            var s = map(noise(this.id * 0.1 + 5, t * 0.1 + 5), 0, 1, satRange[0], satRange[1]);
+            var b = map(noise(this.id * 0.1 + 10, t * 0.1 + 10), 0, 1, briRange[0], briRange[1]);
+    
+        fill(h, s, b);
+        stroke(h, s, b);
+        strokeWeight(1);
+        beginShape();
+        vertex(xx, yy);
+
+
+        for (var i = 0; i <= Nt; i++) {
+            theta += turn * sin(2 * PI * (15 * noise(0.2 * this.id / NB, 0.02 * i) + t));
+            xx += step * cos(theta);
+            yy += step * sin(theta);
+            var xx2 = lerp(xx, x0, (i / Nt) * (i / Nt) * (i / Nt));
+            var yy2 = lerp(yy, lerp(0, hei, i / Nt), max(i / Nt, 1 - sqrt(i / Nt)));
+            vertex(xx2, yy2);
+        }
+        endShape();
     }
 }
 
-// setup() function is called once when the program starts
+var Objects = [];
+var NB = 100;
+
 function setup() {
-    // place our canvas, making it fit our container
-    canvasContainer = $("#canvas-container");
-    let canvas = createCanvas(canvasContainer.width(), canvasContainer.height());
-    canvas.parent("canvas-container");
-    // resize canvas is the page is resized
-    $(window).resize(function() {
-        console.log("Resizing...");
-        resizeCanvas(canvasContainer.width(), canvasContainer.height());
-    });
-    // create an instance of the class
-    myInstance = new MyClass(VALUE1, VALUE2);
+    colorMode(HSB);
+    // Use a random seed for noise each time the program starts
+    noiseSeed(floor(random(10000)));
+    
+    cnv = createCanvas(wid, hei);
+    cnv.parent('canvas-container');
+    background(0);
 
-    var centerHorz = windowWidth / 2;
-    var centerVert = windowHeight / 2;
+  
+
+    var angle = random(TWO_PI); // Random angle between 0 and 2*PI
+    var speed = 0.5; // Speed of the animation movement
+    dirX = cos(angle) * speed;
+    dirY = sin(angle) * speed;
+  
+    
+    for (var i = 0; i < NB; i++) {
+        Objects[i] = new object(i);
+    }
 }
 
-// draw() function is called repeatedly, it's the main animation loop
 function draw() {
-    background(220);    
-    // call a method on the instance
-    myInstance.myMethod();
+    background(0);
+    
+    var t = ((frame_count) % NB_FRAMES) / NB_FRAMES;
+    t += dirX; // Adjust horizontal movement
+    var yPhase = t + dirY; // Adjust vertical movement
 
-    // Put drawings here
-    var centerHorz = canvasContainer.width() / 2 - 125;
-    var centerVert = canvasContainer.height() / 2 - 125;
-    fill(234, 31, 81);
-    noStroke();
-    rect(centerHorz, centerVert, 250, 250);
-    fill(255);
-    textStyle(BOLD);
-    textSize(140);
-    text("p5*", centerHorz + 10, centerVert + 200);
-}
-
-// mousePressed() function is called once after every time a mouse button is pressed
-function mousePressed() {
-    // code to run when mouse is pressed
+    // Draw each object
+    for (var i = 0; i < NB; i++) {
+        Objects[i].draw(); // Only call draw here
+    }
+    
+    frame_count++;
+    if (frame_count <= 100 && frame_count > 80) {
+        // Optionally save the canvas if needed
+        // saveCanvas('s5_' + frame_count + '.png');
+    }
 }
