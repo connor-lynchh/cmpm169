@@ -106,8 +106,8 @@ class Ball {
   display() {
     push();
     translate(this.x, this.y);
-    stroke(255);
-    strokeWeight(0.1);
+    //stroke(255);
+    //strokeWeight(0.1);
     fill(this.color);
     sphere(this.diameter / 2);
     pop();

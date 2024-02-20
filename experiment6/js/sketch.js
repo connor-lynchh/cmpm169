@@ -1,67 +1,95 @@
 // sketch.js - purpose and description here
-// Author: Your Name
-// Date:
+// Author: Connor Lynch
+// Date:2/19/2024
 
 // Here is how you might set up an OOP p5.js project
 // Note that p5.js looks for a file called sketch.js
 
 // Constants - User-servicable parts
 // In a longer project I like to put these in a separate file
-const VALUE1 = 1;
-const VALUE2 = 2;
+let words = [];
+let wordSets;
+let currentSetIndex = 0;
+let lastChangeTime = 0;
+const changeInterval = 10000; // 10 seconds in milliseconds
+let setColors;
 
-// Globals
-let myInstance;
-let canvasContainer;
-
-class MyClass {
-    constructor(param1, param2) {
-        this.property1 = param1;
-        this.property2 = param2;
-    }
-
-    myMethod() {
-        // code to run when method is called
-    }
-}
-
-// setup() function is called once when the program starts
 function setup() {
-    // place our canvas, making it fit our container
-    canvasContainer = $("#canvas-container");
-    let canvas = createCanvas(canvasContainer.width(), canvasContainer.height());
-    canvas.parent("canvas-container");
-    // resize canvas is the page is resized
-    $(window).resize(function() {
-        console.log("Resizing...");
-        resizeCanvas(canvasContainer.width(), canvasContainer.height());
-    });
-    // create an instance of the class
-    myInstance = new MyClass(VALUE1, VALUE2);
+  createCanvas(windowWidth, windowHeight);
+  background(255);
+  frameRate(30);
 
-    var centerHorz = windowWidth / 2;
-    var centerVert = windowHeight / 2;
+  // Define the colors for each set of words
+  setColors = [
+    color(255, 229, 204), // Morning: Light Orange
+    color(255, 255, 204), // Afternoon: Light Yellow
+    color(204, 229, 255), // Evening: Light Blue
+    color(224, 176, 255), // Night: Mauve (purpleish)
+    color(224, 224, 224)  // Sleep: Light Gray
+  ];
+
+  // Define the sets of words for different times of day
+  wordSets = [
+    ["SLEEPY", "TIRED", "WAKING", "LAZY"],
+    ["HUNGRY", "ANXIOUS", "RELUCTANT", "IRRITATED"],
+    ["STUDY", "WORK", "TRAIN", "DRAINED"],
+    ["TIRED", "STRESSED", "OVERWHELMED", "HUNGRY", "OPTIMISTIC"],
+    ["SLEEP"]
+  ];
+
+  // Record the initial time
+  lastChangeTime = millis();
 }
 
-// draw() function is called repeatedly, it's the main animation loop
 function draw() {
-    background(220);    
-    // call a method on the instance
-    myInstance.myMethod();
+  background(255);
+  strokeWeight(3);
+  
+  // Check the time and update the current set of words if necessary
+  if (millis() - lastChangeTime > changeInterval) {
+    currentSetIndex = (currentSetIndex + 1) % wordSets.length;
+    lastChangeTime = millis();
+  }
 
-    // Put drawings here
-    var centerHorz = canvasContainer.width() / 2 - 125;
-    var centerVert = canvasContainer.height() / 2 - 125;
-    fill(234, 31, 81);
-    noStroke();
-    rect(centerHorz, centerVert, 250, 250);
-    fill(255);
-    textStyle(BOLD);
-    textSize(140);
-    text("p5*", centerHorz + 10, centerVert + 200);
+  // Add a new word at a random x position at the top of the canvas
+  if (frameCount % 10 == 0) { // This controls the rate of new words appearing
+    let newWord = new Word(random(wordSets[currentSetIndex]), random(windowWidth), 0, setColors[currentSetIndex]);
+    words.push(newWord);
+  }
+  
+  // Update and display words
+  for (let i = words.length - 1; i >= 0; i--) {
+    words[i].update();
+    words[i].display();
+    
+    // Remove the word if it's off the bottom of the canvas
+    if (words[i].y > windowHeight) {
+      words.splice(i, 1);
+    }
+  }
 }
 
-// mousePressed() function is called once after every time a mouse button is pressed
-function mousePressed() {
-    // code to run when mouse is pressed
+// Word class
+class Word {
+  constructor(text, x, y, color) {
+    this.text = text;
+    this.x = x;
+    this.y = y;
+    this.textSize = 30;
+    this.speed = random(2, 5); // Random speed for falling effect
+    this.color = color; // Set the background color based on the word set
+  }
+  
+  update() {
+    this.y += this.speed; // Move the word down
+  }
+  
+  display() {
+    let w = textWidth(this.text) + 50;
+    fill(this.color);
+    rect(this.x, this.y, w, 50, 50);
+    textSize(this.textSize);
+    fill(0); // Text color is black for contrast
+    text(this.text, this.x + 25, this.y + 35);
+  }
 }
