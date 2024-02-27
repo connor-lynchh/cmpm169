@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- This title is used for tabs and bookmarks -->
+	<title>Experiment 7 - Data Visualization & Networks</title>
+
+	<!-- Use UTF character set, a good idea with any webpage -->
+	<meta charset="UTF-8" />
+	<!-- Set viewport so page remains consistently scaled w narrow devices -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<!-- Include CSS file, including a site-wide CSS and for this particular page -->
+	<link rel="stylesheet" type="text/css" href="../css/site.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	
+
+	<!-- Load jQuery library -->
+	<script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+	<!-- Load p5.js library -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.js"></script>
+
+	<!-- Link to javascript files - DEFER waits until all elements are rendered -->
+	<!-- Use me for a JavaScript OOP Project -->
+	<script type="text/javascript" src="./js/project.js" DEFER></script>
+	<!-- Use me for a p5.js project -->
+	<script type="text/javascript" src="./js/sketch.js" DEFER></script>
+
+	
+
+</head>
+<body>
+	<!-- Style this page by changing the CSS in ../css/site.css or css/experiment.css -->
+	<main id="content">
+		<section>
+			<h1>Experiment 7 - Data Visualization & Networks</h1>
+			<div class="minor-section">
+				<h2>Imitate</h2>
+				<p> To start this project I looked at examples from class and section. At first I didnt find anything to intriguing so I tried to find an API online to use.</p>
+				<p>I did find one but didnt like it to much so I instead opted for the dad joke API.</p>
+			</div>
+
+			<div class="minor-section">
+				<h2>Integrate</h2>
+				<p> In this step I wanted to reuse some methods that I had previosuly tried in other experiments. One of them being spawning multiple objects at one time.  </p>
+				<p>In this case is was multiple dad jokes. I also put a counter in the program to show the number of dad jokes fetched.</p>
+			</div>
+
+			<div class="minor-section">
+				<h2>Innovate</h2>
+				<p>I found this the most challenging part of the project as I did not really know what I wanted to do. </p>
+				<p>I made some features for the program that might it more difficult for the user to generate more dad jokes. I found this a fun and engaging way to experince the jokes.</p>
+			</div>
+
+			<div class="minor-section">
+				<h2>Reflection</h2>
+				<p>Each person that worked on the code should reflect on the process, the difficulties, and the successes of the experiment. Here's where you can put your reflections.</p>
+				<ul>
+					<li>What part of the project you contributed</li>
+					<p>I worked on everything</p>
+					<li>A reflection on your work and the work of the team</li>
+					<p>I was enjoying my time towards the end of this project as I messed around with how a user would generate dad jokes. In the begnning though having to stop working with the first API I found was annoying because I spent so much time trying to learn it.</p>
+					<li>Brief highs and lows</li>
+					<p>The high of this assignment was getting the program to run with all the new features I implemented. The low would be having to stop working with the first API I wanted to use for this experiment</p>
+				</ul>
+			</div>
+
+			<div class="minor-section">
+				<h2>Results</h2>
+				<div id="canvas-container">
+
+
+				<button id="fetchJokeBtn">Fetch Dad Joke</button>
+				<div id="output"></div>
+
+				</div>
+			</div>
+		</section>
+		<nav id="links">
+			<!-- Put links to other pages (including the homepage) here. -->
+			<a href="../index.html" class="button">Back to Main</a>
+		</nav>
+	</main>
+</body>
+</html>
